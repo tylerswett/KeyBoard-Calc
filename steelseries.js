@@ -111,7 +111,7 @@ exports.deregisterApp = function(allCapsAppIdentifier) {
     this.webRequest("/remove_game", removeGameData);
 }
 
-exports.setDisplayLines = function(line1, line2) {
+exports.setDisplayLines = function(allCapsAppIdentifier, line1, line2) {
     const eventData = {
         value: 1,
         frame: {
@@ -119,13 +119,13 @@ exports.setDisplayLines = function(line1, line2) {
             "line-two": line2,
         },
     };
-    this.sendGameEvent("SHOWMESSAGE", eventData);
+    this.sendGameEvent(allCapsAppIdentifier, "SHOWMESSAGE", eventData);
     console.log("setting display lines");
 }
 
-exports.sendGameEvent = async function(eventName, eventData) {
+exports.sendGameEvent = async function(allCapsAppIdentifier, eventName, eventData) {
     const gameEventData = {
-        game: "GGCODE",
+        game: allCapsAppIdentifier,
         event: eventName,
         data: eventData,
     };

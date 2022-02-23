@@ -73,14 +73,14 @@ function checkNumlock(e) {
 function enableCalculator(enabled) {
     calculatorActive = enabled;
     if(calculatorActive) {
-        ss.setDisplayLines("Calculator Active", historyLine ? historyLine : "_");
+        ss.setDisplayLines("SSCALC","Calculator Active", historyLine ? historyLine : "_");
         
         createWindow();
         win = BrowserWindow.getAllWindows()[0];
   
         win.webContents.on("before-input-event", processKeys);
     } else {
-        ss.setDisplayLines("Calculator Disabled", "NumLock to Enable");
+        ss.setDisplayLines("SSCALC","Calculator Disabled", "NumLock to Enable");
         win = BrowserWindow.getAllWindows()[0];
         if(win) {
             win.close();
@@ -102,7 +102,7 @@ function processKeys(event, input) {
                 currentLine = currentLine.substring(0,currentLine.length-1);
             }
             historyLine = `${prevNum}${currentOperation ? currentOperation : ""}`;
-            ss.setDisplayLines(historyLine, `${currentLine}_`);
+            ss.setDisplayLines("SSCALC",historyLine, `${currentLine}_`);
         } else if(input.code == 'NumpadEnter') {
             if(currentOperation!="" && prevNum !="") {
                 if(currentLine == "Press again to C") currentLine = "";
@@ -112,7 +112,7 @@ function processKeys(event, input) {
                 }
                 let result = evaluate(`${prevNum}${currentOperation}${currentLine}`);
                 historyLine = `${prevNum}${currentOperation}${currentLine}=${result}`
-                ss.setDisplayLines(historyLine,"_");
+                ss.setDisplayLines("SSCALC",historyLine,"_");
                 history.push(historyLine);
                 win.webContents.send("add-history", historyLine);
                 lastEnterNumber = currentLine;
@@ -136,7 +136,7 @@ function processKeys(event, input) {
             }
             currentOperation = keyMap[input.code];
             historyLine = `${prevNum}${currentOperation}`;
-            ss.setDisplayLines(historyLine, `${currentLine}_`);
+            ss.setDisplayLines("SSCALC",historyLine, `${currentLine}_`);
         } else if(keyMap[input.code]) {
             if(!currentOperation) {
                 prevNum = "";
@@ -144,7 +144,7 @@ function processKeys(event, input) {
             if(currentLine == "Press again to C") currentLine = "";
             currentLine += keyMap[input.code];
             historyLine = `${prevNum}${currentOperation ? currentOperation : ""}`;
-            ss.setDisplayLines(historyLine, `${currentLine}_`);
+            ss.setDisplayLines("SSCALC",historyLine, `${currentLine}_`);
         }
             
     }
